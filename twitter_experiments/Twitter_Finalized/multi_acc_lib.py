@@ -11,7 +11,13 @@ from file_path import user_keys_excel
 from sys_config import path, webdriver
 from single_acc_lib import delete_first_app, create_or_get_keys
 from check_login_status import convert_to_dictionary, login
-
+### LOGGING ###
+import coloredlogs,logging
+coloredlogs.install()
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+# logger.propagate = False
+### LOGGING ####
 credential_dict = convert_to_dictionary()
 # print(credential_dict)
 # print(len(credential_dict))
@@ -26,8 +32,8 @@ def create_apps_save_keys():
             if(login(driver, username, credential_dict[username])):
                 break
             if counter > 10:
-                print("Unable to access even after 10 attempts, breaking, please check credentials_dict for username",username)
-                break
+                print("Unable to access even after 10 attempts, breaking, please check credentials_dict for username",username,'or check your internet access')
+                return 
         create_or_get_keys(driver, "trial__" + str(app_name_index), username, user_keys_excel)
         app_name_index += 1
 

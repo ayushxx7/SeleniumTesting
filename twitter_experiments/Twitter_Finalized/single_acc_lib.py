@@ -5,47 +5,61 @@ from file_path import user_keys_excel
 #
 from bs4 import BeautifulSoup
 # from check_login_status import login
+### LOGGING ###
+import coloredlogs,logging
+coloredlogs.install()
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+# logger.propagate = False
+### LOGGING ####
 
 
 #Get the access tokens of the already created apps.
 def get_keys_of_first_app(driver):
     driver.get('https://apps.twitter.com/')
+    logger.info('fetching apps.twitter.com')
     elem = driver.find_element_by_css_selector("div.app-details > h2 > a")
     elem.click()
     driver.get(driver.current_url[:-4] + "keys")
+    logger.info('converting current url to api url & parsing that page through BeautifulSoup')
+    
     page = (driver.page_source)
-
     tokenSoup = BeautifulSoup(page,"html.parser")
 
     consumer_tokens = tokenSoup.select(".app-settings > .row > span")
     consumer_key = consumer_tokens[1].string
     consumer_secret = consumer_tokens[3].string
-    print("consumer_key:", consumer_key, "consumer_secret:", consumer_secret, sep = '\n')
+
+    logger.info("consumer_key:%s", consumer_key)
+    logger.info("consumer_secret:%s", consumer_secret)
     
     try:
+        logger.info('locating & clicking access token button')
         get_access = driver.find_element_by_name("op")
         get_access.click()
         time.sleep(2)
         driver.refresh()
     except:
-        print("No access button found")
+        logger.warn("No access button found, must be already clicked")
 
+    logger.info('parsing again')
     page = (driver.page_source)
     tokenSoup = BeautifulSoup(page,"html.parser")
     
     access_tokens = tokenSoup.select(".access > .row > span")
     access_token = access_tokens[1].string
     access_token_secret = access_tokens[3].string
-    print("access_token:", access_token, "access_token_secret:", access_token_secret, sep = '\n')
+    logger.info("access_token:%s", access_token)
+    logger.info("access_token_secret:%s", access_token_secret)
 
     user_key_list = [consumer_key,consumer_secret,access_token,access_token_secret]
-    print('USER KEY LIST:',user_key_list)
+    logger.info('USER KEY LIST:%s',user_key_list)
     return user_key_list
 
 
 def create_app(driver, app_name):
     driver.get('https://apps.twitter.com/')
-
+    logger.info('fetched apps.twitter.com, starting process to create new app')
     New_app = driver.find_element_by_xpath("//a[@href ='/app/new']")
     New_app.send_keys(Keys.RETURN)
 
@@ -56,7 +70,7 @@ def create_app(driver, app_name):
     description = driver.switch_to_active_element()
     description.send_keys("Trying out the twitter APIs")
     description.send_keys(Keys.TAB)
-
+    ## PROBABLY NEED TO RANDOMIZE DESCRIPTION & WEBSITE LINK SOMEHOW
     website = driver.switch_to_active_element()
     website.send_keys("https://www.google.com")
     time.sleep(1)
@@ -90,42 +104,51 @@ def create_app(driver, app_name):
 
 def create_or_get_keys(driver, app_name, username, user_keys_excel):
     driver.get('https://apps.twitter.com/')
+    logger.info('fetched apps.twitter.com')
     try:
+        logger.info('trying fetch first app')
         elem = driver.find_element_by_css_selector("div.app-details > h2 > a")
     except:
+        logger.warn("no app found creating new app")
         create_app(driver, app_name)
     try:
+        logger.info('trying to put api details to user_keys.xlsx')
         put_to_excel(get_keys_of_first_app(driver), username, user_keys_excel)
     
     except Exception as e:
-        print("ERROR:",e,"in getting app credentials for", username)
+        logger.error("ERROR:%s in getting app credentials for %s", e, username)
       ### PHONE VERIFY
     driver.close()
 
 
 def put_to_excel(user_key_list, username, user_keys_excel):
     df = pd.read_excel(user_keys_excel, sheet_name = "Sheet1")
-    print(df)
+    # print(df)
+    logger.info('read user_keys_excel')
     try:
+        logger.info("if %s found in user_keys_excel overwrite api credentials",username)
         df_index = int(df[df.username == username].index.to_native_types()[0])
         df.loc[df_index, 'consumer_key'] = user_key_list[0]
         df.loc[df_index, 'consumer_secret'] = user_key_list[1]
         df.loc[df_index, 'access_token'] = user_key_list[2]
         df.loc[df_index, 'access_token_secret'] = user_key_list[3]
-        print(df)
+        # print(df)
+        logger.info('found and overwritten')
     except IndexError:
+        logger.warn('%s not found, appending to user_keys_excel',username)
         df = df.append(pd.DataFrame([[username] + user_key_list], columns=['username','consumer_key','consumer_secret','access_token','access_token_secret']),ignore_index=True)
-        print(df,"[INDEX ERROR] username not found, appending in excel. ")
     except Exception as e:
-        print('ERROR:',e)
+        logger.error('error thrown: %s',e)
     try:
+        logger.info('put data to user_keys_excel')
         df.to_excel(user_keys_excel)
-        print(df)
+        # print(df)
     except:
-        print('ERROR IN TO EXCEL')
+        logger.error('ERROR IN DF TO USER KEYS EXCEL')
 
 def delete_first_app(driver, username):
     driver.get('https://apps.twitter.com/')
+    logger.info('fetched apps.twitter.com')
     try:
         elem = driver.find_element_by_css_selector("div.app-details > h2 > a")
         elem.click()
@@ -134,16 +157,19 @@ def delete_first_app(driver, username):
         time.sleep(4)
         elem.click()
         time.sleep(4)
-        print("App deleted")
+        logger.info("App deleted")
         #Removing the username entry from the excel file.
         #This will remove multiple entries as well.
-        df = pd.read_excel(user_keys_excel, sheet_name = "Sheet1")
-        df = df[df.username != username]
-        df.to_excel(user_keys_excel)
+        delete_from_excel(username)
+        ####### PROBABLY WILL WORK COMMENTED BELOW LINES
+        # df = pd.read_excel(user_keys_excel, sheet_name = "Sheet1")
+        # df = df[df.username != username]
+        # df.to_excel(user_keys_excel)
     except:
-        print("Error: No app found, or error in excel deletion.")
+        logger.error("Error: No app found, or error in excel deletion.")
 
 def delete_from_excel(username):
+    logger.info("deleting from excel")
     df = pd.read_excel(user_keys_excel, sheet_name = "Sheet1")
     df = df[df.username != username]
     df.to_excel(user_keys_excel)

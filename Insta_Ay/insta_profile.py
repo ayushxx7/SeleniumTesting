@@ -258,6 +258,6 @@ unable_to_access()
 # 	time.sleep(20)
 # 	like = driver.find_elements(By.CSS_SELECTOR,".Szr5J.coreSpriteHeartOpen")
 # 	for x in range(0,len(like)):
-# 		if like[x].is_displayed():
+# 			if like[x].is_displayed():
 # 			like[x].click()
 '''
