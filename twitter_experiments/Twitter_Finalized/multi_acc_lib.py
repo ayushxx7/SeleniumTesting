@@ -69,7 +69,9 @@ def login_and_wait():
         driver = webdriver.Chrome(executable_path = path)
         logger.info('Initiated webdriver')
         login(driver, username, credential_dict[username])
+        driver.get('http://www.twitter.com')
     time.sleep(30)
+    driver.close()
 
 ###### FUNCTION CALLING
 # print(credential_dict)
