@@ -10,8 +10,8 @@ from pandas import read_excel
 from file_path import user_keys_excel
 from sys_config import path, webdriver
 from single_acc_lib import delete_first_app, create_or_get_keys
-# from excelReader import credentials
 from check_login_status import convert_to_dictionary, login
+
 credential_dict = convert_to_dictionary()
 # print(credential_dict)
 # print(len(credential_dict))
