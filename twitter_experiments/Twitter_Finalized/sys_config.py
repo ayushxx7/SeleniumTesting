@@ -17,5 +17,5 @@ def chromedriver_win():
 	chrome_driver_path = req_path[0] + '\\chromedriver\\chromedriver.exe'
 	return chrome_driver_path
 
-# path = chromedriver_mac()
-path = chromedriver_win()
+path = chromedriver_mac()
+# path = chromedriver_win()
