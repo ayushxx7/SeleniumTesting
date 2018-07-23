@@ -77,7 +77,6 @@ Return : None
 # read_login_credentials()
     '''
     tweet_dict = tweet_to_dictionary()
-
     for user in tweet_dict.keys():
         print("User",user,'tweeting from excel')
         # try:
@@ -119,7 +118,6 @@ def tweet_retweet(tweet_text = 'I am a sample tweet'):
                 print(other_username, " Retweets ", current_username , "Tweet text:", tweet.text)
             except Exception as e:
                 print('ERROR:',e,'from id',other_username,'on retweeting',tweet.text)
-
 
 
 # def un_tweet_retweet(tweet_text = 'I am a sample tweet'):
