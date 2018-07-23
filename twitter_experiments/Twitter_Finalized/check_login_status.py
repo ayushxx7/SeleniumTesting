@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 # logger.propagate = False
 ### LOGGING ####
 
-excel_data = pd.read_excel(login_excel)
+login_excel_dataframe = pd.read_excel(login_excel)
 
 def login(driver, username, password):
 #NEED TO CHECK IF CONNECTION IS ACTIVE OR NOT! 
@@ -60,11 +60,11 @@ def login(driver, username, password):
 
 def read_login_credentials():
     issues = []
-    for username, password in zip(excel_data.username, excel_data.password):
-        driver = webdriver.Chrome(executable_path = path)
-        logger.info("Chrome Driver Initiated")
+    for username, password in zip(login_excel_dataframe.username, login_excel_dataframe.password):
         
         for i in range(3):
+            driver = webdriver.Chrome(executable_path = path)
+            logger.info("Chrome Driver Initiated")
             logger.info("Attempt #%i",i)
             status = login(driver, username, password)    
             if (status):
@@ -78,20 +78,14 @@ def read_login_credentials():
             else:
                 logger.info("changing status to not active")
                 issues.append("not active")
-            # print("Logged in")
-        # else:
-        #     if (login(driver, username, password)):
-        #       issues.append("active")
-        #       print("Logged in")
-        #     else:
-        #       issues.append("not active")
-        logger.info("Closing Chrome Driver")
-        driver.close()
-    excel_data['issues'] = issues
-    excel_data.to_excel(login_excel)
+            
+            logger.info("Closing Chrome Driver")
+            driver.close()
+    login_excel_dataframe['issues'] = issues
+    login_excel_dataframe.to_excel(login_excel)
 
 def convert_to_dictionary():
     logger.info("Converting active users to credential dictionary")
-    return {i:j for i, j, k in zip(excel_data.username, excel_data.password, excel_data.issues) if k == 'active'}
+    return {i:j for i, j, k in zip(login_excel_dataframe.username, login_excel_dataframe.password, login_excel_dataframe.issues) if k == 'active'}
 
 # read_login_credentials()
