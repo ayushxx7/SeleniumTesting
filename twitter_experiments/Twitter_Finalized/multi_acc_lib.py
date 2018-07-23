@@ -18,12 +18,16 @@ credential_dict = convert_to_dictionary()
 
 def create_apps_save_keys():
     app_name_index = 0
+    counter = 0
     for username in credential_dict.keys():
         driver = webdriver.Chrome(executable_path = path)
-        while(True):
+        while(True):  ### MIGHT NEED CHANGE
+            counter += 1 
             if(login(driver, username, credential_dict[username])):
                 break
-        
+            if counter > 10:
+                print("Unable to access even after 10 attempts, breaking, please check credentials_dict for username",username)
+                break
         create_or_get_keys(driver, "trial__" + str(app_name_index), username, user_keys_excel)
         app_name_index += 1
 
@@ -36,7 +40,6 @@ def delete_multiple_apps():
             while(True):
                 if(login(driver, username, credential_dict[username])):
                     break
-            # login(driver, username, credential_dict[username])
             delete_first_app(driver, username)
         except:
             print("not found")
@@ -52,8 +55,9 @@ def login_and_wait():
     for username in df.username:
         driver = webdriver.Chrome(executable_path = path)
         login(driver, username, credential_dict[username])
-        # driver.get("http://www.twitter.com")
     time.sleep(30)
+
+###### FUNCTION CALLING
 # print(credential_dict)
 # delete_multiple_apps()
 create_apps_save_keys()

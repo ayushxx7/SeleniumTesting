@@ -42,7 +42,7 @@ def follow_each_other(user_keys_dataframe, api_dict):
             except:
                 print(current_username, " already follows ", other_username)
 
-def create_tweet_file():
+def create_tweet_file(): #### use when tweet file empty
     '''
     args : api_dict,
     read api excel, copy user column and write to new tweet excel file

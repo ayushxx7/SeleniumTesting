@@ -22,25 +22,20 @@ def login(driver, username, password):
     time.sleep(1)
     try:
         driver.get('https://apps.twitter.com/')
+        logger.info('apps.twitter.com opened')
     except:
         logger.error("NOT CONNECTED TO THE INTERNET!") ###NEEDS IMPROVEMENT
         return '404'
-    # print("Opening twitter")
-    logger.info('apps.twitter.com opened')
+
     signIn = driver.find_element_by_xpath('//a[@href="https://twitter.com/login?redirect_after_login=https%3A//apps.twitter.com/"]');
     signIn.click()
     logger.info("Username:%s", username)
 
     email = driver.switch_to_active_element()#Maybe we will select element instead of this.
-    # print(email.get_attribute('value'))
-    # if(email.text == username):
-    #   print('entered correctly')
-    # else:
-    #   print('incorrectly entered')  
     time.sleep(3)
     email.send_keys(username)
-    email.send_keys(Keys.TAB)
     logger.info("email entered")
+    email.send_keys(Keys.TAB)
 
     time.sleep(1)
     email = driver.switch_to_active_element()
