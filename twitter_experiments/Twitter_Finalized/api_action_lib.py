@@ -115,6 +115,7 @@ def tweet_retweet(tweet_text = 'I am a sample tweet'):
         for other_username in user_keys_dataframe[user_keys_dataframe.username != current_username]['username']:
             try:
                 api_dict[other_username].retweet(tweet.id)
+                api_dict[other_username].create_favorite(tweet.id)
                 print(other_username, " Retweets ", current_username , "Tweet text:", tweet.text)
             except Exception as e:
                 print('ERROR:',e,'from id',other_username,'on retweeting',tweet.text)
@@ -144,6 +145,6 @@ def tweet_retweet(tweet_text = 'I am a sample tweet'):
 # update_status_from_excel()
 
 # follow_each_other(user_keys_dataframe, api_dict)
-# tweet_retweet("Integrity Maintained?")
+tweet_retweet("AAP REPORT:https://www.hindustantimes.com/delhi-news/aap-completes-3-years-in-delhi-a-look-at-kejriwal-govt-s-achievements-failures/story-bDy16KdOYHbg17lkyGwOqK.html")
 
-update_status_from_excel()
+# update_status_from_excel()
