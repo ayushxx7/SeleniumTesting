@@ -39,9 +39,9 @@ def create_apps_save_keys():
         app_name_index += 1
 
 def delete_multiple_apps():
-    df = read_excel(user_keys_excel)
+    user_keys_dataframe = read_excel(user_keys_excel)
     logger.info('read user_keys_excel')
-    for username in df.username:
+    for username in user_keys_dataframe.username:
     # for username in credential_dict.keys():
         driver = webdriver.Chrome(executable_path = path)
         logger.info("Initiated webdriver")
@@ -62,10 +62,10 @@ def login_and_wait():
     """
     Note: Login is done on only those credentials whose access details are there.
     """
-    df = read_excel(user_keys_excel)
+    user_keys_dataframe = read_excel(user_keys_excel)
     logger.info('reading user_keys_excel')
     # for username in credential_dict.keys():
-    for username in df.username:
+    for username in user_keys_dataframe.username:
         driver = webdriver.Chrome(executable_path = path)
         logger.info('Initiated webdriver')
         login(driver, username, credential_dict[username])
@@ -76,6 +76,6 @@ def login_and_wait():
 ###### FUNCTION CALLING
 # print(credential_dict)
 # delete_multiple_apps()
-create_apps_save_keys()
+# create_apps_save_keys()
 # login_and_wait()
 # collect_keys_multiple_apps()

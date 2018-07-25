@@ -122,27 +122,27 @@ def create_or_get_keys(driver, app_name, username, user_keys_excel):
 
 
 def put_to_excel(user_key_list, username, user_keys_excel):
-    df = pd.read_excel(user_keys_excel, sheet_name = "Sheet1")
-    # print(df)
+    user_keys_dataframe = pd.read_excel(user_keys_excel, sheet_name = "Sheet1")
+    # print(user_keys_dataframe)
     logger.info('read user_keys_excel')
     try:
         logger.info("if %s found in user_keys_excel overwrite api credentials",username)
-        df_index = int(df[df.username == username].index.to_native_types()[0])
-        df.loc[df_index, 'consumer_key'] = user_key_list[0]
-        df.loc[df_index, 'consumer_secret'] = user_key_list[1]
-        df.loc[df_index, 'access_token'] = user_key_list[2]
-        df.loc[df_index, 'access_token_secret'] = user_key_list[3]
-        # print(df)
+        index = int(user_keys_dataframe[user_keys_dataframe.username == username].index.to_native_types()[0])
+        user_keys_dataframe.loc[index, 'consumer_key'] = user_key_list[0]
+        user_keys_dataframe.loc[index, 'consumer_secret'] = user_key_list[1]
+        user_keys_dataframe.loc[index, 'access_token'] = user_key_list[2]
+        user_keys_dataframe.loc[index, 'access_token_secret'] = user_key_list[3]
+        # print(user_keys_dataframe)
         logger.info('found and overwritten')
     except IndexError:
         logger.warn('%s not found, appending to user_keys_excel',username)
-        df = df.append(pd.DataFrame([[username] + user_key_list], columns=['username','consumer_key','consumer_secret','access_token','access_token_secret']),ignore_index=True)
+        user_keys_dataframe = user_keys_dataframe.append(pd.DataFrame([[username] + user_key_list], columns=['username','consumer_key','consumer_secret','access_token','access_token_secret']),ignore_index=True)
     except Exception as e:
         logger.error('error thrown: %s',e)
     try:
         logger.info('put data to user_keys_excel')
-        df.to_excel(user_keys_excel)
-        # print(df)
+        user_keys_dataframe.to_excel(user_keys_excel)
+        # print(user_keys_dataframe)
     except:
         logger.error('ERROR IN DF TO USER KEYS EXCEL')
 
@@ -150,12 +150,12 @@ def delete_first_app(driver, username):
     driver.get('https://apps.twitter.com/')
     logger.info('fetched apps.twitter.com')
     try:
-        elem = driver.find_element_by_css_selector("div.app-details > h2 > a")
-        elem.click()
+        first_app = driver.find_element_by_css_selector("div.app-details > h2 > a")
+        first_app.click()
         driver.get(driver.current_url[:-4] + "delete")
-        elem = driver.find_element_by_name("op")
+        delete_button = driver.find_element_by_name("op")
         time.sleep(4)
-        elem.click()
+        delete_button.click()
         time.sleep(4)
         logger.info("App deleted")
         #Removing the username entry from the excel file.
@@ -170,9 +170,9 @@ def delete_first_app(driver, username):
 
 def delete_from_excel(username):
     logger.info("deleting from excel")
-    df = pd.read_excel(user_keys_excel, sheet_name = "Sheet1")
-    df = df[df.username != username]
-    df.to_excel(user_keys_excel)
+    user_keys_dataframe = pd.read_excel(user_keys_excel, sheet_name = "Sheet1")
+    user_keys_dataframe = user_keys_dataframe[user_keys_dataframe.username != username]
+    user_keys_dataframe.to_excel(user_keys_excel)
 
 #driver - webdriver.Chrome(executable_path = path)
 # login(driver, username, password)
