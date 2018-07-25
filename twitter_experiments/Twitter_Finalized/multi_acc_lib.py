@@ -39,7 +39,7 @@ def create_apps_save_keys():
                 logger.error("Unable to access even after 10 attempts, breaking, please check login_excel for username: %s or check your internet access",username)
                 login_flag = False
                 break
-        if(login_flag):   
+        if(login_flag):
             create_or_get_keys(driver, "trial__" + str(app_name_index), username, user_keys_excel)
             app_name_index += 1
 
@@ -55,7 +55,7 @@ def delete_multiple_apps():
             while(True):
                 ### NOT SURE IF THIS IS APPROPRIATE OR NOT
                 if(login(driver, username, credential_dict[username])):
-                    break        
+                    break
             delete_first_app(driver, username)
         except:
             logger.warn("no app found, no deletion occured")
@@ -71,7 +71,7 @@ def login_and_wait():
     logger.info('reading user_keys_excel')
     # for username in credential_dict.keys():
     for username in user_keys_dataframe.username:
-        # driver = webdriver.Chrome(executable_path = path)
+        driver = webdriver.Chrome(executable_path = path)
         logger.info('Initiated webdriver')
         login(driver, username, credential_dict[username])
         driver.get('http://www.twitter.com')
@@ -81,6 +81,6 @@ def login_and_wait():
 ###### FUNCTION CALLING
 # print(credential_dict)
 # delete_multiple_apps()
-create_apps_save_keys()
-# login_and_wait()
+# create_apps_save_keys()
+login_and_wait()
 # collect_keys_multiple_apps()
