@@ -1,4 +1,5 @@
-from sys_config import path, chrome_options, webdriver
+from sys_config import path, webdriver
+# from sys_config import driver
 import pandas as pd
 from selenium.webdriver.common.keys import Keys
 import time
@@ -79,8 +80,17 @@ def read_login_credentials():
     login_excel_dataframe['issues'] = issues
     login_excel_dataframe.to_excel(login_excel)
 
+
 def convert_to_dictionary():
     logger.info("Converting active users to credential dictionary")
     return {i:j for i, j, k in zip(login_excel_dataframe.username, login_excel_dataframe.password, login_excel_dataframe.issues) if k == 'active'}
 
+
+def delete_from_excel(username):
+    logger.info("deleting from excel")
+    login_dataframe = pd.read_excel(login_excel, sheet_name = "Sheet1")
+    login_dataframe = login_dataframe[login_dataframe.username != username]
+    login_dataframe.to_excel(login_excel)  
+
+# delete_from_excel('akanksha009verma@gmail.com')
 # read_login_credentials()

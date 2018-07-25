@@ -9,6 +9,8 @@ import time
 from pandas import read_excel
 from file_path import user_keys_excel
 from sys_config import path, webdriver
+# from sys_config import driver
+
 from single_acc_lib import delete_first_app, create_or_get_keys
 from check_login_status import convert_to_dictionary, login
 ### LOGGING ###
@@ -26,17 +28,20 @@ def create_apps_save_keys():
     app_name_index = 0
     counter = 0
     for username in credential_dict.keys():
-        driver = webdriver.Chrome(executable_path = path)
         logger.info("Initiated webdriver")
+        login_flag = True
         while(True):  ### MIGHT NEED CHANGE
             counter += 1
+            driver = webdriver.Chrome(executable_path = path)
             if(login(driver, username, credential_dict[username])):
                 break
-            if counter > 10:
-                logger.error("Unable to access even after 10 attempts, breaking, please check credentials_dict for username",username,'or check your internet access')
-                return 
-        create_or_get_keys(driver, "trial__" + str(app_name_index), username, user_keys_excel)
-        app_name_index += 1
+            if counter > 6:
+                logger.error("Unable to access even after 10 attempts, breaking, please check login_excel for username: %s or check your internet access",username)
+                login_flag = False
+                break
+        if(login_flag):   
+            create_or_get_keys(driver, "trial__" + str(app_name_index), username, user_keys_excel)
+            app_name_index += 1
 
 def delete_multiple_apps():
     user_keys_dataframe = read_excel(user_keys_excel)
@@ -66,7 +71,7 @@ def login_and_wait():
     logger.info('reading user_keys_excel')
     # for username in credential_dict.keys():
     for username in user_keys_dataframe.username:
-        driver = webdriver.Chrome(executable_path = path)
+        # driver = webdriver.Chrome(executable_path = path)
         logger.info('Initiated webdriver')
         login(driver, username, credential_dict[username])
         driver.get('http://www.twitter.com')
@@ -76,6 +81,6 @@ def login_and_wait():
 ###### FUNCTION CALLING
 # print(credential_dict)
 # delete_multiple_apps()
-# create_apps_save_keys()
-login_and_wait()
+create_apps_save_keys()
+# login_and_wait()
 # collect_keys_multiple_apps()

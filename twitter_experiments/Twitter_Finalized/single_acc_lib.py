@@ -180,7 +180,7 @@ def delete_from_excel(username):
 # create_app(driver, app_name = 'trial___1')
 #put_to_excel(get_keys_of_first_app(driver), username, user_keys_excel)
 # print(get_keys_of_first_app(driver))
-#delete_from_excel(username)
+# delete_from_excel('akansha009verma@gmail.com')
 # create_or_get_keys(driver, app_name = "trail___1", login_excel = login_excel)
 
 ## PHONE VERIFY CODE
