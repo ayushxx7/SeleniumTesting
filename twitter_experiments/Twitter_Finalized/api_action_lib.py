@@ -1,5 +1,6 @@
 import tweepy
 import pandas as pd
+import time
 from file_path import user_keys_excel,user_tweets_excel
 user_keys_dataframe = pd.read_excel(user_keys_excel)
 
@@ -97,7 +98,7 @@ Return : None
     #     print(tweet.text)
 
 #update status & #retweet
-def tweet_retweet(tweet_text = 'I am a sample tweet'):
+def tweet_retweet(tweet_text = 'I am a sample tweet', wait_interval = 0):
     '''
     Args: tweet_text
     This function tweets a particular tweet from multiple accounts
@@ -115,8 +116,37 @@ def tweet_retweet(tweet_text = 'I am a sample tweet'):
         for other_username in user_keys_dataframe[user_keys_dataframe.username != current_username]['username']:
             try:
                 api_dict[other_username].retweet(tweet.id)
+                # api_dict[other_username].create_favorite(tweet.id)
+                print(other_username, " Retweets ", current_username , "Tweet text:", tweet.text)
+                if wait_interval != 0:
+                    print(f"Waiting for {wait_interval} seconds")
+                    time.sleep(wait_interval)
+            except Exception as e:
+                print('ERROR:',e,'from id',other_username,'on retweeting',tweet.text)
+
+def tweet_like(tweet_text = 'I am a sample tweet', wait_interval = 0):
+    '''
+    Args: tweet_text
+    This function tweets a particular tweet from multiple accounts
+    Then it retweet that tweet from other accounts.
+    Returns: None
+    '''
+    for current_username in api_dict.keys():
+        print(current_username)
+        tweet = api_dict[current_username].update_status(tweet_text)
+        print(tweet.text)
+        '''
+        for other_username in api_dict.keys():
+            if(other_username != current_username):
+        '''
+        for other_username in user_keys_dataframe[user_keys_dataframe.username != current_username]['username']:
+            try:
+                # api_dict[other_username].retweet(tweet.id)
                 api_dict[other_username].create_favorite(tweet.id)
                 print(other_username, " Retweets ", current_username , "Tweet text:", tweet.text)
+                if wait_interval != 0:
+                    print(f"Waiting for {wait_interval} seconds")
+                    time.sleep(wait_interval)
             except Exception as e:
                 print('ERROR:',e,'from id',other_username,'on retweeting',tweet.text)
 
@@ -143,23 +173,32 @@ def tweet_retweet(tweet_text = 'I am a sample tweet'):
 
 # create_tweet_file()
 # update_status_from_excel()
-def update_same_status(tweet_text):
+def update_same_status(tweet_text, wait_interval = 0):
     for current_username in api_dict.keys():
         tweet = api_dict[current_username].update_status(tweet_text)
-        # if tweet_id_dict.get(current_username) is None:
-        #     tweet_id_dict[current_username] = []
-        # tweet_id_dict[current_username].append(tweet.id)
-    # #Storing the tweet ids now
-    # df = pd.read_excel(user_tweets_excel)
-    # for username in user_keys_dataframe.username:
-    #     df[username]["ID_list"] += tweet_id_dict[username]
-    # df.to_excel(user_tweets_excel)
+        print(f"{current_username}'s status is updated")
+        if wait_interval != 0 and current_username != list(api_dict.keys())[-1]:
+            print(f"Waiting for {wait_interval} seconds")
+            time.sleep(wait_interval)
 def destroy_top_status():
     for current_username in api_dict.keys():
         print(current_username)
-        for tweet in tweepy.Cursor(api_dict[current_username].user_timeline).items():
+        for tweet in tweepy.Cursor(api_dict[current_username].user_timeline).items(1):
             print(tweet.text)
             api_dict[current_username].destroy_status(tweet.id)
+
+def like_top_status():
+    for current_username in api_dict.keys():
+        print(current_username)
+        for tweet in tweepy.Cursor(api_dict[current_username].user_timeline).items(1):
+            print(tweet.text)
+            api_dict[current_username].create_favorite(tweet.id)
+def retweet_top_status():
+    for current_username in api_dict.keys():
+        print(current_username)
+        for tweet in tweepy.Cursor(api_dict[current_username].user_timeline).items(1):
+            print(tweet.text)
+            api_dict[current_username].retweet(tweet.id)
 
 
 # follow_each_other(user_keys_dataframe, api_dict)
@@ -167,5 +206,7 @@ def destroy_top_status():
 # print(tweet_id_dict)
 # update_status_from_excel()
 # create_tweet_file(user_keys_dataframe)
-# update_same_status("Let's inspire ourselves!")
-destroy_top_status()
+# update_same_status("'Live for an ideal and that one ideal alone. Let it be so great, so strong, that there may be nothing else left in the mind; no place for anything else, no time for anything else.' -Swami Vivekananda", 2)
+# destroy_top_status()
+# like_top_status()
+# retweet_top_status()
