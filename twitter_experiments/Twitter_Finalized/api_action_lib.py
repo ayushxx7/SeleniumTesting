@@ -183,9 +183,11 @@ def update_same_status(tweet_text, wait_interval = 0):
 def destroy_top_status():
     for current_username in api_dict.keys():
         print(current_username)
-        for tweet in tweepy.Cursor(api_dict[current_username].user_timeline).items(1):
+        for tweet in tweepy.Cursor(api_dict[current_username].user_timeline).items():
             print(tweet.text)
-            api_dict[current_username].destroy_status(tweet.id)
+            if tweet.text == "AAP IS GREAT":
+                print("destroyed!")
+                api_dict[current_username].destroy_status(tweet.id)
 
 def like_top_status():
     for current_username in api_dict.keys():
@@ -202,7 +204,7 @@ def retweet_top_status():
 
 
 # follow_each_other(user_keys_dataframe, api_dict)
-tweet_retweet("AAP REPORT:https://www.hindustantimes.com/delhi-news/aap-completes-3-years-in-delhi-a-look-at-kejriwal-govt-s-achievements-failures/story-bDy16KdOYHbg17lkyGwOqK.html")
+# tweet_retweet("AAP REPORT:https://www.hindustantimes.com/delhi-news/aap-completes-3-years-in-delhi-a-look-at-kejriwal-govt-s-achievements-failures/story-bDy16KdOYHbg17lkyGwOqK.html")
 # print(tweet_id_dict)
 # update_status_from_excel()
 # create_tweet_file(user_keys_dataframe)
