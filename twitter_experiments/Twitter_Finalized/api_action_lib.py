@@ -42,7 +42,7 @@ def follow_each_other(user_keys_dataframe, api_dict):
             except:
                 print(current_username, " already follows ", other_username)
 
-def create_tweet_file(): #### use when tweet file empty
+def create_tweet_file(user_keys_dataframe): #### use when tweet file empty
     '''
     args : api_dict,
     read api excel, copy user column and write to new tweet excel file
@@ -53,10 +53,10 @@ def create_tweet_file(): #### use when tweet file empty
     df = pd.DataFrame()
     for username in user_keys_dataframe.username:
         df["username"] = user_keys_dataframe.username
-        df['tweet'] = user_keys_dataframe.username
-        # df.to_excel("excel_files/user_tweets.xlsx")
+        df['tweet'] = ""
+        df.to_excel("excel_files/user_tweets.xlsx")
     print(df)
-    df.to_excel(user_tweets_excel) # < MADE THIS WORK
+    # df.to_excel(user_tweets_excel) # < MADE THIS WORK
 
 user_tweets = pd.read_excel(user_tweets_excel)
 
@@ -143,8 +143,29 @@ def tweet_retweet(tweet_text = 'I am a sample tweet'):
 
 # create_tweet_file()
 # update_status_from_excel()
+def update_same_status(tweet_text):
+    for current_username in api_dict.keys():
+        tweet = api_dict[current_username].update_status(tweet_text)
+        # if tweet_id_dict.get(current_username) is None:
+        #     tweet_id_dict[current_username] = []
+        # tweet_id_dict[current_username].append(tweet.id)
+    # #Storing the tweet ids now
+    # df = pd.read_excel(user_tweets_excel)
+    # for username in user_keys_dataframe.username:
+    #     df[username]["ID_list"] += tweet_id_dict[username]
+    # df.to_excel(user_tweets_excel)
+def destroy_top_status():
+    for current_username in api_dict.keys():
+        print(current_username)
+        for tweet in tweepy.Cursor(api_dict[current_username].user_timeline).items():
+            print(tweet.text)
+            api_dict[current_username].destroy_status(tweet.id)
+
 
 # follow_each_other(user_keys_dataframe, api_dict)
-tweet_retweet("AAP REPORT:https://www.hindustantimes.com/delhi-news/aap-completes-3-years-in-delhi-a-look-at-kejriwal-govt-s-achievements-failures/story-bDy16KdOYHbg17lkyGwOqK.html")
-
+# tweet_retweet("AAP REPORT:https://www.hindustantimes.com/delhi-news/aap-completes-3-years-in-delhi-a-look-at-kejriwal-govt-s-achievements-failures/story-bDy16KdOYHbg17lkyGwOqK.html")
+# print(tweet_id_dict)
 # update_status_from_excel()
+# create_tweet_file(user_keys_dataframe)
+# update_same_status("Let's inspire ourselves!")
+destroy_top_status()

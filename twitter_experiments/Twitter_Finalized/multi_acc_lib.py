@@ -29,7 +29,7 @@ def create_apps_save_keys():
         driver = webdriver.Chrome(executable_path = path)
         logger.info("Initiated webdriver")
         while(True):  ### MIGHT NEED CHANGE
-            counter += 1 
+            counter += 1
             if(login(driver, username, credential_dict[username])):
                 break
             if counter > 10:
@@ -77,5 +77,5 @@ def login_and_wait():
 # print(credential_dict)
 # delete_multiple_apps()
 # create_apps_save_keys()
-# login_and_wait()
+login_and_wait()
 # collect_keys_multiple_apps()
