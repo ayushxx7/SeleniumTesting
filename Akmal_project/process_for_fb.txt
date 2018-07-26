@@ -41,6 +41,29 @@ all Single Account functionality * no. of accounts
 
 
 
+BASIC FUNCTIONALITY TESTED BUT NOT FULLY IMPLEMENTED
+
+-> add friends by name
+-> create pages
+-> create groups
+-> like & follow pages
+-> send request to be added in groups
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
