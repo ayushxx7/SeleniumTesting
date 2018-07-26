@@ -18,7 +18,7 @@ def api_dict_creation(user_keys_dataframe):
         access_token = row.access_token.tolist()[0]
         access_token_secret = row.access_token_secret.tolist()[0]
 
-        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+        auth = tweepy.OAuthHandler(consumer_key, consumer_secret) 
         auth.set_access_token(access_token, access_token_secret)
         api = tweepy.API(auth)
         api_dict[username] = api
@@ -202,7 +202,7 @@ def retweet_top_status():
 
 
 # follow_each_other(user_keys_dataframe, api_dict)
-tweet_retweet("Make Love Not Warcraft #SouthPark #southparkwasright",1)
+tweet_retweet("What exactly is #DigitalBikaner ? Can someone please explain to me?",1)
 # print(tweet_id_dict)
 # update_status_from_excel()
 # create_tweet_file(user_keys_dataframe)
