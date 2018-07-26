@@ -30,26 +30,28 @@ driver = webdriver.Chrome(r'C:\testDir\chromedriver_win32\chromedriver.exe', chr
 #     driver.execute_script("window.alert = function() {};")
 
 #driver = webdriver.Chrome(r'C:\Users\Ayush\Desktop\chromedriver_win32\chromedriver.exe')
-driver.get('http://www.facebook.com/login')
-# super_get('http://www.facebook.com/login')
+def login():
+	driver.get('http://www.facebook.com/login')
+	# super_get('http://www.facebook.com/login')
 
-driver.find_element_by_name('email').send_keys(username)
-driver.find_element_by_name('pass').send_keys(password)
-driver.find_element_by_name('login').click()	
-# time.sleep(2)
-driver.maximize_window()
+	driver.find_element_by_name('email').send_keys(username)
+	driver.find_element_by_name('pass').send_keys(password)
+	driver.find_element_by_name('login').click()	
+	# time.sleep(2)
+	driver.maximize_window()
 # time.sleep(6)
-searchbox = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.NAME, 'q')))
-searchbox.click()
-# driver.find_element_by_name('q').send_keys('Ayush Mandowara' + Keys.RETURN)	
-searchbox.send_keys('Ayush Mandowara' + Keys.RETURN)
+def search_name():
+	searchbox = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.NAME, 'q')))
+	searchbox.click()
+	# driver.find_element_by_name('q').send_keys('Ayush Mandowara' + Keys.RETURN)	
+	searchbox.send_keys('Ayush Mandowara' + Keys.RETURN)
 # searchbox.click()
 
 # time.sleep(5)
 # element = wait.until(EC.presence_of_element_located((By.xpath, '//input[@placeholder="Search"]'))
 # driver.find_element_by_xpath('//input[@placeholder="Search"]').send_keys('Ayush Mandowara' + Keys.RETURN)
 # time.sleep(4)
-def cover_pic_name():
+def coverpic_name():
 	firstresult = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, '//div[contains(text(), "Ayush Mandowara")]')))
 	firstresult.click()
 	# driver.find_element_by_xpath('//div[contains(text(), "Ayush Mandowara")]').click()
