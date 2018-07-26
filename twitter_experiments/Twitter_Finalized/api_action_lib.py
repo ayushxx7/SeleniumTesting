@@ -202,7 +202,7 @@ def retweet_top_status():
 
 
 # follow_each_other(user_keys_dataframe, api_dict)
-tweet_retweet("AAP REPORT:https://www.hindustantimes.com/delhi-news/aap-completes-3-years-in-delhi-a-look-at-kejriwal-govt-s-achievements-failures/story-bDy16KdOYHbg17lkyGwOqK.html")
+tweet_retweet("Make Love Not Warcraft #SouthPark #southparkwasright",1)
 # print(tweet_id_dict)
 # update_status_from_excel()
 # create_tweet_file(user_keys_dataframe)
