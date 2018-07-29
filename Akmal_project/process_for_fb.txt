@@ -1,0 +1,69 @@
+	SINGLE ACCOUNT
+
+Account credentials given 
+
+Convert to Organic Account 
+	-> account must have at least 100
+	-> accepts friend requests
+	-> like, share random posts
+	-> added in groups
+	-> likes pages
+	-> likes content on pages
+	-> shares content from pages/groups/other sources to personal profile
+	-> updates normalish status once every 3 days at least
+	-> updates polarizing status every 15 days
+	-> posts about check ins
+	-> created a page+group and posts content in it
+
+After Organic Account basic criterias met 
+	-> Target AAP supporting page
+		-> like, comment on all profile and cover pics
+		-> like/comment on all supporting posts 
+		-> share posts to timeline, pages, groups
+
+	-> Promote Main AAP accounts
+		-> like, comment, share in a subtle way
+
+	-> update status in favor of AAP
+		-> text updates
+		-> image uploads
+		-> twitter link shares
+
+
+		MULTI ACCOUNT
+
+Bots interact with each other
+	-> friends
+	-> like, comment
+	-> sometimes share
+
+all Single Account functionality * no. of accounts
+
+
+
+BASIC FUNCTIONALITY TESTED BUT NOT FULLY IMPLEMENTED
+
+-> add friends by name
+-> create pages
+-> create groups
+-> like & follow pages
+-> send request to be added in groups
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
