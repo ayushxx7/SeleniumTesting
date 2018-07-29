@@ -201,7 +201,7 @@ def destroy_top_status(n = 1):
             print(tweet.text)
             api_dict[current_username].destroy_status(tweet.id)
 
-def like_top_status(screen_name = "", n = 1):
+def like_top_status(screen_name = "", n = 1, wait_interval = 0):
     for current_username in api_dict.keys():
         print(current_username)
         if screen_name != "":
@@ -209,12 +209,15 @@ def like_top_status(screen_name = "", n = 1):
                 try:
                     api_dict[current_username].create_favorite(tweet.id)
                     print(f"{tweet.text} tweeted by {screen_name} is liked by {current_username}")
+                    if wait_interval != 0 and current_username != list(api_dict.keys())[-1]:
+                        print(f"Waiting for {wait_interval} seconds")
+                        time.sleep(wait_interval)
                 except Exception as e:
                     print(f"ERROR: {e}")
         else:
             print("There is no screen name provided")
             break
-def retweet_top_status(screen_name = "", n = 1):
+def retweet_top_status(screen_name = "", n = 1, wait_interval = 0):
     for current_username in api_dict.keys():
         print(current_username)
         if screen_name != "":
@@ -222,6 +225,9 @@ def retweet_top_status(screen_name = "", n = 1):
                 try:
                     api_dict[current_username].retweet(tweet.id)
                     print(f"{tweet.text} tweeted by {screen_name} is retweeted by {current_username}")
+                    if wait_interval != 0 and current_username != list(api_dict.keys())[-1]:
+                        print(f"Waiting for {wait_interval} seconds")
+                        time.sleep(wait_interval)
                 except Exception as e:
                     print(f"ERROR: {e}")
         else:
