@@ -187,7 +187,7 @@ def retweet_from_id(api_dict, tweet_id, wait_interval):
         except Exception as e:
             print(f"{e}: is the error.")
 
-def update_same_status(tweet_text, wait_interval = 0):
+def update_same_status(api_dict, tweet_text, wait_interval = 0):
     for current_username in api_dict.keys():
         tweet = api_dict[current_username].update_status(tweet_text)
         print(f"{current_username}'s status is updated")
