@@ -10,11 +10,10 @@ from selenium.common.exceptions import NoSuchElementException
 import time
 from selenium.webdriver.common.action_chains import ActionChains
 from fb_credentials import username, password
-from sys_config import path
+from sys_config import path, prefs
 # username = "xxxxxxxxxxxxxxxxx"
 # password = "xxxxxxxxxxxxxxxxx"
 chrome_options = webdriver.ChromeOptions()
-prefs = {"profile.default_content_setting_values.notifications" : 2}
 chrome_options.add_experimental_option("prefs",prefs)
 
 driver = webdriver.Chrome(path, chrome_options=chrome_options)
