@@ -94,3 +94,5 @@ def create_page(driver):
 
     skip2 = driver.find_elements_by_xpath(("[@href='/pages/create/get_started/save_current_step/?step=cover_photo&page_id=397344647339974&event=skip_button_click']"))
     skip2.click()
+login_to_facebook(driver)
+create_page(driver)
